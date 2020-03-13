@@ -1,0 +1,60 @@
+{
+  "name": "gulp-gridfw",
+  "version": "1.0.0",
+  "description": "Gridfw plugin for Gulp",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gridfw/gulp-gridfw.git"
+  },
+  "keywords": [
+    "Gridfw",
+    "gulp"
+  ],
+  "author": "khalid RAFIK, Gridfw",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gridfw/gulp-gridfw/issues"
+  },
+  "homepage": "https://github.com/gridfw/gulp-gridfw#readme",
+  "devDependencies": {},
+  "dependencies": {
+    "@babel/core": "^7.8.7",
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "chalk": "^3.0.0",
+    "cli-table": "^0.3.1",
+    "glob": "^7.1.6",
+    "glob-base": "^0.3.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-chug": "^0.5.1",
+    "gulp-clone": "^2.0.1",
+    "gulp-coffeescript": "0.0.15",
+    "gulp-ejs": "^5.0.0",
+    "gulp-error-handle": "^1.0.1",
+    "gulp-imagemin": "^7.1.0",
+    "gulp-include": "^2.4.1",
+    "gulp-plumber": "^1.2.1",
+    "gulp-pug": "^4.0.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-template": "^5.0.0",
+    "gulp-terser": "^1.2.0",
+    "gulp-util": "^3.0.8",
+    "jpegtran-bin": "^4.0.0",
+    "optipng-bin": "^6.0.0",
+    "plugin-error": "^1.0.1",
+    "pug": "^2.0.4",
+    "sharp": "^0.25.1",
+    "terser": "^4.6.6",
+    "through2": "^3.0.1",
+    "to-ico": "^1.1.5",
+    "vinyl": "^2.2.0"
+  }
+}
