@@ -25,7 +25,7 @@ views: do ->
 	viewRename= (locale)->
 		return Through2.obj (file, enc, cb)->
 			path= Path.join file.base, locale, (file.path.slice file.base.length)
-			path= path.replace /\..+?$/, '.js'
+			# path= path.replace /\..+?$/, '.js'
 			file.path= path
 			cb null, file
 			return
@@ -102,6 +102,7 @@ views: do ->
 							# inlineRuntimeFunctions: no
 						content= "#{content}\nmodule.exports= template;"
 						file.contents = Buffer.from content, 'utf8'
+						file.path= file.path.replace /\..+$/, '.js'
 					catch e
 						console.log 'HAS ERROR: ', e
 						err = e
@@ -110,7 +111,7 @@ views: do ->
 		# Tmp dir
 		tmpDir= options.tmpDir or 'tmp/views'
 		# Task
-		@addTask watchQ, (cb)=>
+		@addTask options.name, watchQ, (cb)=>
 			try
 				# Load i18n data
 				i18n= await @loadI18n(options.i18n, options.data)
@@ -123,12 +124,14 @@ views: do ->
 				console.error 'ERR>>', err
 			
 			# Compile views
+			Gulp= @_Gulp
 			gulp= Gulp.src options.src, nodir: yes
 			gulps= []
 			for locale, i18nContent of i18n
 				glp= gulp
 					.pipe(GulpClone())
 					.pipe @onError()
+					.pipe viewRename(locale)
 					.pipe @precompile({options.data..., i18n: i18nContent})
 					.pipe Gulp.dest tmpDir
 					.pipe @waitToFinish()
@@ -137,7 +140,6 @@ views: do ->
 					# 	cb null, file
 					# 	return
 					.pipe viewCompiler()
-					.pipe viewRename(locale)
 					# .pipe Rename (path)->
 					# 	path.extname= '.js'
 					# 	path.dirname= Path.join path.dirname, locale

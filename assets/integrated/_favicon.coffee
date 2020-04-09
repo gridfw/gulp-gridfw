@@ -17,7 +17,8 @@ favicon: do ->
 		throw new Error 'Missing Options.src' unless options.src
 		throw new Error 'Missing Options.dest' unless options.dest
 		# Add task
-		@addTask options.src, =>
+		Gulp= @_Gulp
+		@addTask options.name, options.src, =>
 			Gulp.src options.src, nodir: yes
 				.pipe @onError()
 				.pipe Through2.obj (file, enc, cb)->

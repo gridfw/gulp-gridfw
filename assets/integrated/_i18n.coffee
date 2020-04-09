@@ -11,7 +11,8 @@ i18n: (options)->
 	throw new Error 'Missing options.src' unless options.src
 	throw new Error 'Missing options.dest' unless options.dest
 	# Add task
-	@addTask options.src, =>
+	Gulp= @_Gulp
+	@addTask options.name, options.src, =>
 		Gulp.src options.src, nodir: yes
 			.pipe @onError()
 			.pipe @precompile(options.data)
@@ -27,6 +28,7 @@ i18n: (options)->
 ###
 loadI18n: (path, data)->
 	new Promise (resolve, reject)=>
+		Gulp= @_Gulp
 		i18n= null
 		Gulp.src path
 			.pipe @precompile(data)

@@ -7,8 +7,8 @@ js: (options)->
 	throw new Error 'Missing Options.dest' unless options.dest
 	throw new Error 'Missing Options.watch' unless options.watch
 	# Add task
-	@addTask options.watch, =>
-		glp= Gulp.src options.src, nodir: yes
+	@addTask options.name, options.watch, =>
+		glp= @_Gulp.src options.src, nodir: yes
 			.pipe @onError()
 			.pipe Include hardFail: true
 			.pipe @precompile(options.data)
@@ -26,5 +26,5 @@ js: (options)->
 					'transform-async-to-generator'
 				]
 		return glp.pipe @minifyJS()
-			.pipe Gulp.dest options.dest
+			.pipe @_Gulp.dest options.dest
 	this # chain

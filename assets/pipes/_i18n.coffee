@@ -162,20 +162,10 @@ compileI18n: do ->
 				localesPath= {}
 				localesPath[k]= "#{k}.js" for k of data
 				# Mapper
-				contents= JSON.stringify locales:localesPath
-				if options.jsonp
-					contents= "#{options.jsonp}(#{contents});"
-				else if options.varname
-					contents= """
-					if(!( (typeof #{options.varname} == 'object') && #{options.varname} )) #{options.varname}= {};
-					#{options.varname}.mapper= #{contents};
-					"""
-				else
-					contents= "module.exports=#{contents};"
 				files.push new Vinyl
 					cwd: cwd
-					path: 'mapper.js'
-					contents: Buffer.from contents
+					path: 'mapper.json'
+					contents: Buffer.from JSON.stringify locales:localesPath
 				# Push files
 				@push file for file in files
 			catch e

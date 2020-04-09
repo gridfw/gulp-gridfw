@@ -5,7 +5,7 @@ Path=			require 'path'
 Fs=				require 'fs'
 EventStream=	require 'event-stream'
 
-Gulp=			require 'gulp'
+# Gulp=			require 'gulp'
 PluginError=	require 'plugin-error'
 Vinyl=			require 'vinyl'
 GulpPlumber=	require 'gulp-plumber'
@@ -34,6 +34,9 @@ GulpEJS=		require 'gulp-ejs'
 Sharp=			require 'sharp'
 CliTable=		require 'cli-table'
 
+# {spawn: Spawn}=	require 'child_process'
+{exec: Exec}=	require 'child_process'
+
 # params
 UGLIFY_NODE_PARAMS= {module: on, compress: {toplevel: true, module: true, keep_infinity: on, warnings: on} }
 UGLIFY_BROWSER_PARAMS= {compress: {toplevel: no, keep_infinity: on, warnings: on} }
@@ -50,8 +53,9 @@ module.exports= class
 	 * @optional @param {Object} options.precompileOptions - options to use for EJS used to precompiled files
 	 *
 	###
-	constructor: (options)->
+	constructor: (gulp, options)->
 		options ?= {}
+		@_Gulp= gulp
 		@isProd= !!options.isProd
 		@_uglifyNode= options.uglifyNode or UGLIFY_NODE_PARAMS
 		@_uglifyBrowser= options.uglifyBrowser or UGLIFY_BROWSER_PARAMS

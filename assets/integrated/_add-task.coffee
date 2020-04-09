@@ -1,14 +1,17 @@
 ###*
  * Add gulp task
 ###
-addTask: (glob, task)->
+addTask: (name, glob, task)->
 	throw new Error "Default task already created. Task adding expected sync" if @_isRunning
+	if name
+		Object.defineProperty task, 'name', value: name 
 	@_tasks.push task
 	@_watch.push glob, task
 	this # chain
 
 # Run gulp
 run: ->
+	Gulp= @_Gulp
 	# watch
 	watchFx= (cb)=>
 		unless @isProd

@@ -7,7 +7,8 @@ json: (options)->
 	throw new Error 'Missing Options.dest' unless options.dest
 	throw new Error 'Missing Options.watch' unless options.watch
 	# Add task
-	@addTask options.watch, =>
+	Gulp= @_Gulp
+	@addTask options.name, options.watch, =>
 		Gulp.src options.src, nodir: yes
 			.pipe @onError()
 			.pipe Include hardFail: true
