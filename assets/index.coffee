@@ -45,6 +45,7 @@ EJS_PRECOMPILE=
 	delimiter: '%'
 	async: yes
 
+
 module.exports= class
 	###*
 	 * @param  {Boolean} options.isProd - if production mode

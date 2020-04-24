@@ -19,7 +19,8 @@ json: (options)->
 				err= null
 				try
 					data= file.contents.toString 'utf8'
-					eval "var dta= #{data}"
+					dta= null
+					eval "dta= #{data}"
 					if @isProd
 						data= JSON.stringify dta
 					else

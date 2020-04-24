@@ -13,18 +13,21 @@ js: (options)->
 			.pipe Include hardFail: true
 			.pipe @precompile(options.data)
 			.pipe GulpCoffeescript bare: true
-		# babel
+		# Babel
 		if options.babel
-			glp= glp.pipe Babel
-				presets: ['babel-preset-env']
-				plugins: [
-					['transform-runtime',{
-						helpers: no
-						polyfill: no
-						regenerator: no
-					}]
-					'transform-async-to-generator'
-				]
-		return glp.pipe @minifyJS()
-			.pipe @_Gulp.dest options.dest
+			glp1= glp.pipe GulpClone()
+				.pipe @minifyJS()
+				.pipe @_Gulp.dest options.dest
+			glp2= glp.pipe GulpClone()
+				.pipe @babel()
+				.pipe @minifyJS()
+				.pipe Rename (path)->
+					path.basename += '-babel'
+					return
+				.pipe @_Gulp.dest options.dest
+			rtn= EventStream.merge [glp1, glp2]	
+		else
+			rtn= glp.pipe @minifyJS()
+				.pipe @_Gulp.dest options.dest
+		return rtn
 	this # chain
