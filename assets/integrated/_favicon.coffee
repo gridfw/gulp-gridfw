@@ -59,7 +59,8 @@ favicon: do ->
 					# Promise
 					Promise.all jobs
 					.then -> do cb
-					.catch cb
+					.catch (e)->
+						cb new PluginError '::favicon', e
 				.pipe ImageMin()
 				.pipe Gulp.dest options.dest
 		this # chain

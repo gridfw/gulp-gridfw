@@ -14,9 +14,9 @@ webp: (options)->
 				# keep original file
 				@push file
 				# dest webp
-				extname= Path.extname(file.name).toLowerCase()
+				extname= Path.extname(file.path).toLowerCase()
 				webpPath= file.path+'.webp'
-				unless extname is '.webp' or Fs.existsSync webpPath
+				unless extname in ['.svg', '.webp'] or Fs.existsSync webpPath
 					Sharp(file.path)
 						.webp()
 						.toBuffer()
@@ -27,7 +27,8 @@ webp: (options)->
 								path: webpPath
 								contents: b
 							return
-						.catch cb
+						.catch (e)->
+							cb new PluginError '::webp', e
 				return
 			.pipe ImageMin()
 			.pipe Gulp.dest options.dest

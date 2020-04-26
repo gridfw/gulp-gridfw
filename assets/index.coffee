@@ -28,6 +28,8 @@ Babel=			require 'gulp-babel'
 GulpSass=		require 'gulp-sass'
 Through2=		require 'through2'
 
+Svgmin=			require 'gulp-svgmin'
+
 GulpCoffeescript= require 'gulp-coffeescript'
 GulpEJS=		require 'gulp-ejs'
 

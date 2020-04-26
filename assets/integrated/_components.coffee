@@ -46,7 +46,7 @@ joinComponents: do ->
 				# base dir
 				cwd= file._cwd
 			catch e
-				err= e or 'Error'
+				err= new PluginError '::components', e
 			cb err
 			return
 		# Concat
@@ -73,7 +73,7 @@ joinComponents: do ->
 					path:	targetFile
 					contents: Buffer.from content
 			catch e
-				err= e or 'Error'
+				err= new PluginError '::components', e
 			cb err
 		return Through2.obj _collector, _concatAll
 

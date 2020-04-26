@@ -44,6 +44,7 @@
     "gulp-pug": "^4.0.1",
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
+    "gulp-svgmin": "^2.2.0",
     "gulp-template": "^5.0.0",
     "gulp-terser": "^1.2.0",
     "gulp-util": "^3.0.8",

@@ -92,6 +92,6 @@ pugPipeCompiler: do ->
 				file.contents = Buffer.from content, 'utf8'
 				file.path= file.path.replace /\..+$/, '.js'
 			catch e
-				err = e or 'ERROR'
+				err= new PluginError '::view-compiler', err
 			cb err, file
 			return
