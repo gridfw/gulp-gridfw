@@ -4,13 +4,13 @@
 favicon: do ->
 	# Resizer
 	_resize= (obj, file, img, size, path)->
-		img.clone().resize({width: size, height: size}).toBuffer().then (bf)->
+		return img.clone().resize({width: size, height: size}).toBuffer().then (bf)->
 			obj.push new Vinyl
 				cwd: file.cwd
 				base: file.base
 				path: path
 				contents: bf
-		return
+			return
 	# interface
 	return (options)->
 		throw new Error 'Illegal arguments' unless arguments.length is 1 and options

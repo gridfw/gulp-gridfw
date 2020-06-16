@@ -16,7 +16,6 @@ Glob = require 'glob'
 GlobBase= require 'glob-base'
 
 Terser=			require 'terser'
-GulpTerser=		require 'gulp-terser'
 Pug=			require 'pug'
 Buffer
 Include=		require 'gulp-include'
@@ -31,7 +30,7 @@ Through2=		require 'through2'
 Svgmin=			require 'gulp-svgmin'
 
 GulpCoffeescript= require 'gulp-coffeescript'
-GulpEJS=		require 'gulp-ejs'
+EJS=			require 'ejs'
 
 Sharp=			require 'sharp'
 CliTable=		require 'cli-table'
@@ -54,6 +53,7 @@ module.exports= class
 	 * @param {Object} options.uglifyNode - Uglify options for node js files
 	 * @param {Object} options.uglifyBrowser - Uglify options for browser
 	 * @optional @param {Object} options.precompileOptions - options to use for EJS used to precompiled files
+	 * @optional @param {Integer} options.delay - watch delay, default to 200ms
 	 *
 	###
 	constructor: (gulp, options)->
@@ -63,6 +63,7 @@ module.exports= class
 		@_uglifyNode= options.uglifyNode or UGLIFY_NODE_PARAMS
 		@_uglifyBrowser= options.uglifyBrowser or UGLIFY_BROWSER_PARAMS
 		@_precompileOptions= options.precompileOptions or EJS_PRECOMPILE
+		@_delay= options.delay or 200
 		# tasks
 		@_tasks= []
 		@_watch= []

@@ -29,24 +29,9 @@ compileAndRunGulp: (gulp, src)->
 	# Run Gulp
 	runGulp= (cb)->
 		console.log '════════════════════════════ Run Gulp ════════════════════════════════'
-		ps= Exec "gulp --gulpfile=#{GULP_FILE_NAME}"
-		# stdout
-		ps.stdout.on 'data', (data)->
-			console.log data.trim()
-			return
-		# stderr
-		ps.stderr.on 'data', (data)->
-			console.log data.trim()
-			return
-		# error
-		ps.on 'error', (data)->
-			console.log 'GULP-ERR>>', data.trim()
-			return
-		# close
-		ps.on 'close', ->
-			console.log '════════════════════════════ Gulp closed ════════════════════════════════'
-			return
-		return ps
+		glp= require Path.join process.cwd(), "#{GULP_FILE_NAME}"
+		glp= glp.run()
+		return glp(cb)
 	# add task
 	gulp.task 'default', gulp.series compileGulp, runGulp
 	this # chain

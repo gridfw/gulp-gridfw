@@ -103,7 +103,7 @@ compileI18n: do ->
 			# Add pug escape
 			if PUG_REPLACE_REGEX.test content
 				content= content.replace PUG_REPLACE_REGEX, '$1 pugEscape('
-				content= "(function{#{PUG_ESCAPE}; return #{content}})()"
+				content= "(function(){#{PUG_ESCAPE}; return #{content}})()"
 			result[locale]= content
 		return result
 	# Convert to JS files

@@ -15,13 +15,14 @@ run: ->
 	# watch
 	watchFx= (cb)=>
 		unless @isProd
+			watchOptions= delay: @_delay
 			watchArr= @_watch
 			i=0
 			len= watchArr.length
 			while i<len
-				Gulp.watch watchArr[i++], watchArr[i++]
+				Gulp.watch watchArr[i++], watchOptions, watchArr[i++]
 		cb()
 		return
 	# Default task
-	Gulp.task 'default', Gulp.series Gulp.parallel.apply(Gulp, @_tasks), watchFx
-	return
+	# Gulp.task 'runner', Gulp.series Gulp.parallel.apply(Gulp, @_tasks), watchFx
+	return Gulp.series Gulp.parallel.apply(Gulp, @_tasks), watchFx

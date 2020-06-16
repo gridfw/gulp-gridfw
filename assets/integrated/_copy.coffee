@@ -9,7 +9,6 @@ copy: (options)->
 	task= =>
 		Gulp= @_Gulp
 		Gulp.src options.src, nodir: yes, since: Gulp.lastRun(task)
-			.pipe @onError()
 			.pipe Gulp.dest options.dest
 	@addTask options.name, options.src, task
 	this # chain

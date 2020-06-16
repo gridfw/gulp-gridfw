@@ -3,7 +3,6 @@
 ###
 onError: ->
 	GulpPlumber (err)->
-
 		try
 			# get error line
 			if err.stack and expr= /:(\d+):(\d+):/.exec err.stack
@@ -11,13 +10,16 @@ onError: ->
 				col = parseInt expr[2]
 				code = err.code?.split("\n")[line-3 ... line + 3].join("\n")
 			else
-				code = line = col = '?'
+				code= '?'
+				line= err.Line or err.line or '?'
+				col= err.Column or err.col or '?'
+				col+= ':' + err.pos if err.pos
 			# ...
 			# Render
 			table = new CliTable()
 			table.push {Plugin: err.plugin || '-'},
 				{Name: err.name || '?'},
-				{Filename: err.filename || err.fileName || err.path || ''},
+				{Filename: err.fileName || err.filename || err.path || ''},
 				{Message: err.message|| ''},
 				{Line: line},
 				{Col: col}
