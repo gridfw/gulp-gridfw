@@ -27,7 +27,7 @@ json: (options)->
 						data= JSON.stringify dta, null, "\t"
 					file.contents= Buffer.from data
 				catch e
-					err= new PluginError '::json', e
+					err= new PluginError {plugin: '::json', error: e, fileName: file.path}
 				cb err, file
 			.pipe Rename extname: '.json'
 			.pipe Gulp.dest options.dest

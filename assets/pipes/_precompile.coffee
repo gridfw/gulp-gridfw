@@ -9,6 +9,6 @@ precompile: (data)->
 			result= EJS.render code, data, @_precompileOptions
 			file.contents= Buffer.from result
 		catch e
-			err= new PluginError 'EJS', err, {filename: file.path}
+			err= new PluginError {plugin: '::EJS', error: e, filename: file.path}
 		cb err, file
 		return

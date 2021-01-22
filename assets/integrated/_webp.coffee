@@ -28,7 +28,7 @@ webp: (options)->
 								contents: b
 							return
 						.catch (e)->
-							cb new PluginError '::webp', e
+							cb new PluginError {plugin: '::webp', error: e, fileName: file.path}
 				return
 			.pipe ImageMin()
 			.pipe Gulp.dest options.dest

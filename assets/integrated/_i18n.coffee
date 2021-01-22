@@ -15,6 +15,7 @@ i18n: (options)->
 	@addTask options.name, options.src, =>
 		Gulp.src options.src, nodir: yes
 			.pipe @onError()
+			.pipe Include hardFail: true
 			.pipe @precompile(options.data)
 			.pipe GulpCoffeescript bare: true
 			.pipe @compileI18n options
@@ -31,6 +32,7 @@ loadI18n: (path, data)->
 		Gulp= @_Gulp
 		i18n= null
 		Gulp.src path
+			.pipe Include hardFail: true
 			.pipe @precompile(data)
 			.pipe GulpCoffeescript bare: true
 			.pipe(@compileI18n dataCb: (data)-> i18n= data)

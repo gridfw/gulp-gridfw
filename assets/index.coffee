@@ -12,12 +12,14 @@ GulpPlumber=	require 'gulp-plumber'
 Rename=			require 'gulp-rename'
 Chalk=			require 'chalk'
 
+
 Glob = require 'glob'
 GlobBase= require 'glob-base'
 
 Terser=			require 'terser'
 Pug=			require 'pug'
-Buffer
+Coffeescript=	require 'coffeescript'
+
 Include=		require 'gulp-include'
 GulpClone=		require 'gulp-clone'
 GulpPug=		require 'gulp-pug'
@@ -34,6 +36,8 @@ EJS=			require 'ejs'
 
 Sharp=			require 'sharp'
 CliTable=		require 'cli-table'
+
+GulpFilter=		require 'gulp-filter'
 
 # {spawn: Spawn}=	require 'child_process'
 {exec: Exec}=	require 'child_process'
@@ -71,6 +75,6 @@ module.exports= class
 		return
 	# PIPES
 	#=include pipes/_*.coffee
-	
+
 	# INTEGRATED CODE
 	#=include integrated/_*.coffee

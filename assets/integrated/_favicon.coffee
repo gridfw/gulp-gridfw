@@ -60,7 +60,7 @@ favicon: do ->
 					Promise.all jobs
 					.then -> do cb
 					.catch (e)->
-						cb new PluginError '::favicon', e
+						cb new PluginError {plugin: '::favicon', error: e, fileName: file.path}
 				.pipe ImageMin()
 				.pipe Gulp.dest options.dest
 		this # chain

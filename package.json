@@ -1,6 +1,6 @@
 {
   "name": "gulp-gridfw",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Gridfw plugin for Gulp",
   "main": "build/index.js",
   "scripts": {
@@ -25,10 +25,11 @@
   },
   "dependencies": {
     "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-env": "^7.10.3",
     "@babel/runtime": "^7.9.2",
     "chalk": "^3.0.0",
     "cli-table": "^0.3.1",
+    "coffeescript": "^2.5.1",
     "ejs": "^3.1.2",
     "glob": "^7.1.6",
     "glob-base": "^0.3.0",
@@ -39,6 +40,7 @@
     "gulp-coffeescript": "0.0.15",
     "gulp-ejs": "^5.1.0",
     "gulp-error-handle": "^1.0.1",
+    "gulp-filter": "^6.0.0",
     "gulp-imagemin": "^7.1.0",
     "gulp-include": "^2.4.1",
     "gulp-plumber": "^1.2.1",

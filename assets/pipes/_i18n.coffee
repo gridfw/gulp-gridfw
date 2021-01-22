@@ -3,7 +3,7 @@
 ###
 compileI18n: do ->
 	# JSON stringify
-	STR_COMPILE_REGEX= /^\s*function \(.\)\{var .="";return .\+=("[^"]+")\}\s*$/
+	STR_COMPILE_REGEX= /^\s*function \(\)\{var .="";return .\+=(".+"|'.+')\}\s*$/
 	PUG_REPLACE_REGEX= /(\b)pug\.escape\(/g
 	_jsonStringify= (obj, replacer, indent)->
 		# Replacer
@@ -26,7 +26,7 @@ compileI18n: do ->
 	_mapLocales= (bufferedI18n)->
 		# check for local name
 		localeNames= bufferedI18n.localeName
-		throw 'Expected "localeName" to map all used locales' unless (typeof localeNames is 'object') and localeNames
+		throw new Error 'Expected "localeName" to map all used locales' unless (typeof localeNames is 'object') and localeNames
 		usedLocales= Object.keys localeNames
 		# prepare result
 		result= {}
@@ -35,7 +35,7 @@ compileI18n: do ->
 		missingLocales= []
 		for k,v of bufferedI18n
 			# general value
-			if (typeof v is 'string') or (typeof v is 'function')
+			if (typeof v is 'string') or (typeof v is 'function') or Array.isArray(v)
 				for lg in usedLocales
 					result[lg][k]= v
 			# Custom message for each local
@@ -43,17 +43,17 @@ compileI18n: do ->
 				# Add values
 				for lg in usedLocales
 					missingLocales.push "#{k}.#{lg}" unless result[lg][k]= v[lg]
-				# Check for extra locales
-				for lg of v
-					unless lg in usedLocales
-						throw "Enexpected local: #{k}.#{lg} - Please add this locale to 'localeName' first."
+				# # Check for extra locales
+				# for lg of v
+				# 	unless lg in usedLocales
+				# 		throw "Enexpected local: #{k}.#{lg} - Please add this locale to 'localeName' first."
 			else
-				throw "Illegal value @#{k}"
+				throw new Error "Illegal value @#{k}"
 		if missingLocales.length
-			throw "Missing locales: #{missingLocales.join ','}"
+			throw new Error "Missing locales: #{missingLocales.join ','}"
 		# Map locales names
 		# Add reserved attributes
-		throw '"locale" and "locales" are reserved attributes' if result.locale or result.locales
+		throw new Error '"locale" and "locales" are reserved attributes' if result.locale or result.locales
 		for lg in usedLocales
 			# Locale
 			result[lg].locale= lg
@@ -70,7 +70,7 @@ compileI18n: do ->
 			inlineRuntimeFunctions: no
 			name: 'ts'
 		# uglify and remove unused vars
-		v = Terser.minify str
+		v = Terser.minify str, compress: {keep_fargs: no}
 		throw v.error if v.error
 		str = v.code.replace /^function ts/, 'function '
 		# Replace with simple string if is the case
@@ -141,7 +141,7 @@ compileI18n: do ->
 				# base dir
 				cwd= file._cwd
 			catch e
-				err = new PluginError 'GulpGridfw.i18n', e
+				err = new PluginError {plugin: '::i18n', error: e, fileName: file.path, message: e and e.message or '-'}
 			cb err
 			return
 		# concat all files
@@ -169,7 +169,7 @@ compileI18n: do ->
 				# Push files
 				@push file for file in files
 			catch e
-				err = new PluginError 'GulpGridfw.i18n', e
+				err = new PluginError {plugin: '::i18n', message: e and (e.message or e) or '-', error: e}
 			cb err
 			return
 		# return

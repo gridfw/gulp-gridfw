@@ -3,6 +3,7 @@
  * @param {PATH} options.views - path to views
  * @param {PATH} options.i18n - path to i18n files
  * @param {PATH} options.dest - dest directory
+ * @optional @param {Boolean} options.modifiedOnly - if compile modified files only
  * @optional @param {Object} data	- data to use when precompiling code
  * @optional @param {function} compiler - function that will compile views, @default GulpPug
  * @optional @param {Strign} tmpDir - Path of temporary directory that will be used to store temporary compiled views, @default tmp/views
@@ -34,14 +35,15 @@ views: (options)->
 
 	# Compile data
 	data= options.data or {}
-			
+
 	# Tmp dir
 	tmpDir= options.tmpDir or 'tmp/views'
 	# Task
-	task= (cb)=>
+	self= this
+	task= (cb)->
 		try
 			# Load i18n data
-			i18n= await @loadI18n(options.i18n, data)
+			i18n= await self.loadI18n(options.i18n, data)
 			# parse i18n values
 			d= null
 			for k,v of i18n
@@ -49,21 +51,36 @@ views: (options)->
 				i18n[k]= d
 		catch err
 			console.error 'ERR>>', err
-		
+
 		# Compile views
-		Gulp= @_Gulp
+		Gulp= self._Gulp
 		gulpOptions= nodir: yes
 		gulpOptions.since= Gulp.lastRun(task) if options.modifiedOnly
 		gulp= Gulp.src options.src, gulpOptions
 		gulps= []
-		for locale, i18nContent of i18n
-			glp= gulp
+		_execGulps= (locale, i18nContent)->
+			# Create filter
+			filterIgnoreLocales= []
+			for k of i18n when k isnt locale
+				filterIgnoreLocales.push k
+			# return pipline
+			return gulp
 				.pipe(GulpClone())
-				.pipe @onError()
-				.pipe @viewRename(locale)
-				.pipe @precompile({data..., i18n: i18nContent})
+				.pipe self.onError()
+				# Filter files that are in specific language
+				.pipe GulpFilter (file)->
+					fileName= file.path
+					if ~(i= fileName.lastIndexOf('.')) and ~(j= fileName.lastIndexOf('.', i-1))
+						part= fileName.substring(j+1, i)
+						if part is locale
+							file.path= "#{fileName.substr(0, j)}#{fileName.substr(i)}"
+						else if part in filterIgnoreLocales
+							return no
+					return yes
+				.pipe self.viewRename(locale)
+				.pipe self.precompile({data..., i18n: i18nContent})
 				.pipe Gulp.dest tmpDir
-				.pipe @waitToFinish()
+				.pipe self.waitToFinish()
 				# .pipe Through2.obj (file, enc, cb)->
 				# 	console.log '-------- File: ', file.path
 				# 	cb null, file
@@ -73,9 +90,10 @@ views: (options)->
 				# 	path.extname= '.js'
 				# 	path.dirname= Path.join path.dirname, locale
 				# 	return
-				.pipe @minifyJS()
+				.pipe self.minifyJS()
 				.pipe Gulp.dest options.dest
-			gulps.push glp
+		for locale, i18nContent of i18n
+			gulps.push _execGulps locale, i18nContent
 		return EventStream.merge(gulps)
 	@addTask options.name, watchQ, task
 	this # chain

@@ -47,9 +47,12 @@ pugPipeCompiler: do ->
 	prodFilters=
 		text:	devFilters.text
 		coffeescript: (txt, options)->
-			v = Terser.minify Coffeescript.compile txt, CsOptions
-			throw v.error if v.error
-			return v.code
+			try
+				v = Terser.minify Coffeescript.compile txt, CsOptions
+				throw v.error if v.error
+				return v.code
+			catch e
+				console.log "ERR>>", e
 		js:	(txt, options)->
 			v = Terser.minify txt
 			throw v.error if v.error
@@ -92,6 +95,6 @@ pugPipeCompiler: do ->
 				file.contents = Buffer.from content, 'utf8'
 				file.path= file.path.replace /\..+$/, '.js'
 			catch e
-				err= new PluginError '::view-compiler', err
+				err= new PluginError {plugin: '::view-compiler', error: e, fileName: file.path}
 			cb err, file
 			return
