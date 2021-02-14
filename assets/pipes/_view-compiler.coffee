@@ -37,7 +37,7 @@ pugPipeCompiler: do ->
 				data: txt
 				indentedSyntax: yes
 				indentType: 'tab'
-				outputStyle: 'compact'
+				outputStyle: 'expanded'
 			# return string
 			return sassResult.css.toString('utf8')
 		json: (txt, options)->
@@ -85,7 +85,7 @@ pugPipeCompiler: do ->
 					compileDebug:	no
 					filters:		filters
 					viewSettings...
-					} 
+					}
 					# globals:		options.globals
 					# inlineRuntimeFunctions: no
 				if isModule

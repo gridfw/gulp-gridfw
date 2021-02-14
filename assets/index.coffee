@@ -27,6 +27,7 @@ ImageMin=		require 'gulp-imagemin'
 ToIco=			require 'to-ico'
 Babel=			require 'gulp-babel'
 GulpSass=		require 'gulp-sass'
+Sass= 			require 'sass'
 Through2=		require 'through2'
 
 Svgmin=			require 'gulp-svgmin'
