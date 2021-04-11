@@ -71,7 +71,8 @@ pugPipeCompiler: do ->
 			return JSON.stringify dta
 	# Interface
 	return (isModule, viewSettings)->
-		filters= if @isProd then prodFilters else devFilters
+		isPord= @isPord
+		filters= if isPord then prodFilters else devFilters
 		return Through2.obj (file, enc, cb)->
 			err = null
 			try
@@ -83,6 +84,7 @@ pugPipeCompiler: do ->
 					filename:		file.path
 					debug:			no
 					compileDebug:	no
+					pretty:			not isPord
 					filters:		filters
 					viewSettings...
 					}
